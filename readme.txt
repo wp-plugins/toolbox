@@ -8,7 +8,7 @@ Stable tag: trunk
 
 
 
-Werkzeugkoffer für die Modularisierung der functions.php im Theme. WordPress Snippets bequem und übersichtlich als Module verwalten.
+Werkzeugkoffer für die Modularisierung der functions.php. WordPress Snippets bequem und übersichtlich als Module verwalten.
 
 
 
