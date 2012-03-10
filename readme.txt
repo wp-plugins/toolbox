@@ -3,7 +3,7 @@ Contributors: sergej.mueller
 Tags: tools, functions, modules
 Donate link: http://flattr.com/profile/sergej.mueller
 Requires at least: 3.3
-Tested up to: 3.3
+Tested up to: 3.4
 Stable tag: trunk
 
 
