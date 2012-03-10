@@ -9,14 +9,12 @@ Author URI: http://ebiene.de
 
 /* Sicherheitsabfrage */
 if ( !class_exists('Toolbox') ) {
-	header('Status: 403 Forbidden');
-	header('HTTP/1.1 403 Forbidden');
-	exit();
+	die();
 }
 
 
 /* Ab hier kann's los gehen */
-function sm_optimize_db() {
+function optimize_db_tables() {
 	/* Global */
 	global $wpdb;
 	
@@ -39,6 +37,6 @@ if ( ! get_transient('sm_optimized_db') ) {
 	 
 	add_action(
 		'admin_init',
-		'sm_optimize_db'
+		'optimize_db_tables'
 	);
 }

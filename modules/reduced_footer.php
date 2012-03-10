@@ -9,9 +9,7 @@ Author URI: http://ebiene.de
 
 /* Sicherheitsabfrage */
 if ( !class_exists('Toolbox') ) {
-	header('Status: 403 Forbidden');
-	header('HTTP/1.1 403 Forbidden');
-	exit();
+	die();
 }
 
 

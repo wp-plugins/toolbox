@@ -10,28 +10,28 @@ Author URI: http://ebiene.de
 
 /* Sicherheitsabfrage */
 if ( !class_exists('Toolbox') ) {
-	header('Status: 403 Forbidden');
-	header('HTTP/1.1 403 Forbidden');
-	exit();
+	die();
 }
 
 
 /* Ab hier kann's los gehen */
-function sm_optimize_image($data) {
+function optimize_upload_images($data) {
 	/* Upload-Ordner */
 	$upload = wp_upload_dir();
 	
-	/* Original + WP-BugFix */
-	$files = array(
-		ltrim(
-			str_replace(
-				$upload['subdir'],
-				'',
-				'/' .$data['file']
-			),
-			'/'
-		)
-	);
+	/* WP-Bugfux */
+	if ( empty($upload['subdir']) ) {
+		$path = $upload['path'];
+		$url = $upload['url'];
+		$files = array($data['file']);
+	} else {
+		$info = pathinfo($data['file']);
+		
+		$path = $upload['basedir']. '/' .$info['dirname'];
+		$url = $upload['baseurl']. '/' .$info['dirname'];
+		
+		$files = array($info['basename']);
+	}
 	
 	/* Thumbs hinzufügen */
 	if ( !empty($data['sizes']) ) {
@@ -49,7 +49,7 @@ function sm_optimize_image($data) {
 		$response = wp_remote_get(
 			sprintf(
 				'http://www.smushit.com/ysmush.it/ws.php?img=%s',
-				urlencode($upload['url']. '/' .$file)
+				urlencode($url. '/' .$file)
 			)
 		);
 		
@@ -66,7 +66,7 @@ function sm_optimize_image($data) {
 		/* Überschreiben */
 		if ($ysmush && !empty($ysmush->dest)) {
 			@file_put_contents(
-				$upload['path']. '/' .$file,
+				$path. '/' .$file,
 		    	@file_get_contents(
 		      		urldecode($ysmush->dest)
 		    	)
@@ -80,5 +80,5 @@ function sm_optimize_image($data) {
 
 add_filter(
   'wp_generate_attachment_metadata',
-  'sm_optimize_image'
+  'optimize_upload_images'
 );
