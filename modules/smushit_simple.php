@@ -47,9 +47,12 @@ function optimize_upload_images($data) {
 	foreach ($files as $file) {
 		/* URL erfragen */
 		$response = wp_remote_get(
-			sprintf(
-				'http://www.smushit.com/ysmush.it/ws.php?img=%s',
-				urlencode($url. '/' .$file)
+			esc_url_raw(
+				sprintf(
+					'http://www.smushit.com/ysmush.it/ws.php?img=%s',
+					urlencode($url. '/' .$file)
+				),
+				'http'
 			)
 		);
 		
