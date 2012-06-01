@@ -309,23 +309,22 @@ final class Toolbox {
 	* @since   0.1
 	* @change  0.1
 	*
-	* @param   array   $data  Bereits vorhandene Links
+	* @param   array   $links  Bereits vorhandene Links
 	* @param   string  $page  Aktuelle Seite
 	* @return  array   $data  Modifizierte Links
 	*/
 
-	public static function row_meta($data, $page)
+	public static function row_meta($links, $page)
 	{
 		/* Rechte */
 		if ( $page != self::$plugin_path ) {
-			return $data;
+			return $links;
 		}
 		
 		return array_merge(
-			$data,
+			$links,
 			array(
-				'<a href="http://flattr.com/profile/sergej.mueller" target="_blank">Plugin flattern</a>',
-				'<a href="https://plus.google.com/110569673423509816572" target="_blank">Auf Google+ folgen</a>'
+				'<a href="http://wpcoder.de" target="_blank">Weitere Plugins des Autors</a>'
 			)
 		);
 	}
@@ -507,7 +506,7 @@ final class Toolbox {
 	* Registrierung der Optionsseite
 	*
 	* @since   0.1
-	* @change  0.1
+	* @change  0.2
 	*/
 
 	public static function add_page()
@@ -515,7 +514,7 @@ final class Toolbox {
 		/* Anlegen */
 		$page = add_options_page(
 			'Toolbox',
-			'<img src="' .plugins_url('toolbox/img/icon.png'). '" width="11" height="9" border="0" alt="Toolbox" />Toolbox',
+			'Toolbox',
 			'manage_options',
 			'toolbox',
 			array(
@@ -629,8 +628,8 @@ final class Toolbox {
 		$screen->set_help_sidebar(
 			'<p><strong>Mehr zum Autor</strong></p>'.
 			'<p><a href="https://plus.google.com/110569673423509816572/" target="_blank">Google+</a></p>'.
-			'<p><a href="http://ebiene.de" target="_blank">Portfolio</a></p>'.
-			'<p><a href="http://flattr.com/profile/sergej.mueller" target="_blank">Flattr</a></p>'
+			'<p><a href="http://wpcoder.de" target="_blank">Plugins</a></p>'.
+			'<p><a href="http://ebiene.de" target="_blank">Portfolio</a></p>'
 		);
 	}
 	

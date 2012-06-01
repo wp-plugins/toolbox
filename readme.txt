@@ -1,7 +1,7 @@
 === Toolbox ===
 Contributors: sergej.mueller
 Tags: tools, functions, modules
-Donate link: http://flattr.com/profile/sergej.mueller
+Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=5RDDW9FEHGLG6
 Requires at least: 3.3
 Tested up to: 3.4
 Stable tag: trunk
@@ -35,11 +35,16 @@ Auf diese Weise müssen WordPress-Hooks und andere Funktionserweiterungen nicht 
 * Einfache Weitergabe der WordPress-Snippets
 * Modus für mehr Sicherheit beim Ausführen der Module
 
+= Systemanforderungen =
+* PHP ab 5.3
+* WordPress ab 3.3
+
 = Dokumentation =
 * [Toolbox: WordPress Snippets als Module](http://playground.ebiene.de/toolbox-wordpress-plugin/ "Toolbox: WordPress Snippets als Module")
 
 = Autor =
 * [Google+](https://plus.google.com/110569673423509816572 "Google+")
+* [Plugins](http://wpcoder.de "Plugins")
 * [Portfolio](http://ebiene.de "Portfolio")
 
 

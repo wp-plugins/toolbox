@@ -1,7 +1,10 @@
 /* @group Icon */
 
 #icon-toolbox {
-	background: url('../img/icon32.png') no-repeat;
+	width: 32px;
+	height: 32px;
+	background: url('../img/icon@2x.png');
+	background-size: 100%;
 }
 
 /* @end group */
@@ -27,6 +30,7 @@
 #toolbox_main .form-table th small {
 	color: #8F8F8F;
 	display: block;
+	text-shadow: none;
 }
 #toolbox_main .form-table caption {
 	width: 100%;
