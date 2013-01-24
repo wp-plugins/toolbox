@@ -22,12 +22,12 @@ if ( !class_exists('WP') ) {
 */
 
 final class Toolbox {
-	
-	
+
+
 	/* Init */
 	private static $plugin_path;
 	private static $modules_path;
-	
+
 
 	/**
 	* Konstruktor der Klasse
@@ -40,21 +40,21 @@ final class Toolbox {
   	{
 		/* Optionen */
 		$options = get_option('toolbox');
-		
+
 		/* Sicherheit */
 		if ( !empty($options['secure']) ) {
 			if ( (defined('DOING_AUTOSAVE') && DOING_AUTOSAVE) or (defined('DOING_CRON') && DOING_CRON) or (defined('DOING_AJAX') && DOING_AJAX) or (defined('XMLRPC_REQUEST') && XMLRPC_REQUEST) ) {
 				return;
 			}
 		}
-		
+
 		/* Init */
 		self::$plugin_path = plugin_basename(__FILE__);
 		self::$modules_path = plugin_dir_path(__FILE__). 'modules/';
-		
+
 		/* Module einbinden */
 		self::_require_modules($options);
-		
+
 		/* Backend */
 		if ( is_admin() ) {
 			add_action(
@@ -85,7 +85,7 @@ final class Toolbox {
 					'add_page'
 				)
 			);
-			
+
 			add_filter(
 				'plugin_row_meta',
 				array(
@@ -104,8 +104,8 @@ final class Toolbox {
 			);
 		}
 	}
-	
-	
+
+
 	/**
 	* Installation des Plugins auch für MU-Blogs
 	*
@@ -249,8 +249,8 @@ final class Toolbox {
 	{
 		delete_option('toolbox');
 	}
-	
-	
+
+
 	/**
 	* Rückgabe der IDs installierter Blogs
 	*
@@ -259,18 +259,18 @@ final class Toolbox {
 	*
 	* @return  array  Blog-IDs
 	*/
-	
+
 	private static function _get_blog_ids()
 	{
 		/* Global */
 		global $wpdb;
-		
+
 		return $wpdb->get_col(
 			$wpdb->prepare("SELECT blog_id FROM `$wpdb->blogs`")
 		);
 	}
-	
-	
+
+
 	/**
 	* Hinzufügen der Action-Links (Einstellungen links)
 	*
@@ -320,7 +320,7 @@ final class Toolbox {
 		if ( $page != self::$plugin_path ) {
 			return $links;
 		}
-		
+
 		return array_merge(
 			$links,
 			array(
@@ -328,8 +328,8 @@ final class Toolbox {
 			)
 		);
 	}
-	
-	
+
+
 	/**
 	* Filtert Module je nach Bereich
 	*
@@ -339,7 +339,7 @@ final class Toolbox {
 	* @param   array  $modules  Alle Module
 	* @return  array  $modules  Gefilterte Module
 	*/
-	
+
 	private static function _filter_modules($modules)
 	{
 		if ( is_admin() ) {
@@ -354,8 +354,8 @@ final class Toolbox {
 			);
 		}
 	}
-	
-	
+
+
 	/**
 	* Lädt Module je nach Bereich nach
 	*
@@ -364,14 +364,14 @@ final class Toolbox {
 	*
 	* @param   array  $options  Plugin-Optionen
 	*/
-	
+
 	private static function _require_modules($options)
 	{
 		/* Leer */
 		if ( empty($options['modules']) ) {
 			return;
 		}
-		
+
 		/* Module filtern */
 		if ( ! $modules = self::_filter_modules($options['modules']) ) {
 			return;
@@ -380,21 +380,21 @@ final class Toolbox {
 		/* Module loopen */
 		foreach ( $modules as $module => $time) {
 			$file = self::$modules_path . self::_clean_module($module);
-			
+
 			if ( is_readable($file) ) {
 				require_once($file);
 			} else {
 				unset($options['modules'][$module]);
 			}
 		}
-		
+
 		/* Update */
 		if ( count($modules) != count($options['modules']) ) {
 			update_option('toolbox', $options);
 		}
 	}
-	
-	
+
+
 	/**
 	* Bereinigt den Modulnamen
 	*
@@ -404,13 +404,13 @@ final class Toolbox {
 	* @param   string  $str  Unbehandelter Name
 	* @return  string  $str  Bereinigter Name
 	*/
-	
+
 	private static function _clean_module($str)
 	{
 		return (string)preg_replace('/[^a-z0-9-_\.]/i', '', $str );
 	}
-	
-	
+
+
 	/**
 	* Gibt verfügbare Module zurück
 	*
@@ -419,30 +419,30 @@ final class Toolbox {
 	*
 	* @return  array  $modules  Array mit gefundenen Modulen
 	*/
-	
+
 	private static function _list_modules()
 	{
 		/* Auslesen */
 		$files = glob(self::$modules_path. '*.php', GLOB_NOSORT|GLOB_ERR);
-		
+
 		/* Leer */
 		if ( empty($files) ) {
 			return false;
 		}
-		
+
 		/* Init */
 		$modules = array();
-		
+
 		/* Loopen */
 		foreach ($files as $file) {
 			/* Modul */
 			$module = str_replace(self::$modules_path, '', $file);
-			
+
 			/* Sicherheitsabgleich */
 			if ( $module == self::_clean_module($module) ) {
 				/* Metadaten */
 				$meta = self::_read_metadata($file);
-				
+
 				$modules[] = array(
 					'ident' => $module,
 					'name'  => ( empty($meta['name']) ? $module : $meta['name'] ),
@@ -451,11 +451,11 @@ final class Toolbox {
 				);
 			}
 		}
-		
+
 		return $modules;
 	}
-	
-	
+
+
 	/**
 	* Liest Metadaten eines Moduls ein
 	*
@@ -465,13 +465,13 @@ final class Toolbox {
 	* @param   string  $file  Moduldatei samt Pfad
 	* @return  string         Ermittelter Modulname
 	*/
-	
+
 	private static function _read_metadata($file)
 	{
 		return get_file_data( $file, array('name' => 'Module Name', 'desc' => 'Description', 'link' => 'Module URI') );
 	}
-	
-	
+
+
 	/**
 	* Bereitet Module zum Speichern vor
 	*
@@ -482,16 +482,16 @@ final class Toolbox {
 	* @param   array  $status   Array mit Status-Codes
 	* @return  array  $output   Zusammengebautes Array mit Modulen
 	*/
-	
+
 	private static function _prepare_modules($modules, $status)
 	{
 		/* Leer */
 		if ( empty($modules) or empty($status) or count($modules) != count($status) ) {
 			return array();
 		}
-		
+
 		$output = array();
-		
+
 		foreach ($modules as $key => $module) {
 			if ( $module == self::_clean_module($module) ) {
 				$output[$module] = $status[$key];
@@ -500,7 +500,7 @@ final class Toolbox {
 
 		return $output;
 	}
-	
+
 
 	/**
 	* Registrierung der Optionsseite
@@ -522,7 +522,7 @@ final class Toolbox {
 				'options_page'
 			)
 		);
-		
+
 		/* CSS */
 		add_action(
 			'admin_print_styles-' .$page,
@@ -531,7 +531,7 @@ final class Toolbox {
 				'add_css'
 			)
 		);
-		
+
 		/* Hilfe */
 		add_action(
 			'load-' .$page,
@@ -541,8 +541,8 @@ final class Toolbox {
 			)
 		);
 	}
-	
-	
+
+
 	/**
 	* Einbindung von CSS
 	*
@@ -554,7 +554,7 @@ final class Toolbox {
 	{
 		/* Infos auslesen */
 		$data = get_plugin_data(__FILE__);
-		
+
 		/* CSS registrieren */
 		wp_register_style(
 			'toolbox_css',
@@ -566,20 +566,20 @@ final class Toolbox {
 		/* CSS einbinden */
 		wp_enqueue_style('toolbox_css');
 	}
-	
-	
+
+
 	/**
 	* Hilfe-Tab oben rechts
 	*
 	* @since   0.1
 	* @change  0.1
 	*/
-	
+
 	public static function add_help()
 	{
 		/* Screen */
 		$screen = get_current_screen();
-		
+
 		/* Tabs */
 		$screen->add_help_tab(
 			array(
@@ -589,13 +589,13 @@ final class Toolbox {
 							 '<ul>'.
 							 	'<li><em>Deaktiviert</em><br />'.
 							 	'Setzt das Modul auf inaktiv. Die Datei lädt nie. Standardeinstellung.</li>'.
-							 	
+
 							 	'<li><em>Laden nur im Backend</em><br />'.
 							 	'Toolbox bindet das Modul ausschliesslich im Administrationsbereich ein. Nicht im Blog-Frontend.</li>'.
-							 	
+
 							 	'<li><em>Laden nur im Frontend</em><br />'.
-							 	'Die Ausführung des Moduls erfolgt ausnahmsweise im Blog-Frontend. Das Backend ist davon ausgeschlossen.</li>'.
-							 	
+							 	'Die Ausführung des Moduls erfolgt ausnahmslos im Blog-Frontend. Das Backend ist davon ausgeschlossen.</li>'.
+
 							 	'<li><em>Laden im Back- und Frontend</em><br />'.
 							 	'Das Modul ist aktiv auf allen Blogseiten. Im Admin und Blogseiten.</li>'.
 							 '</ul>'
@@ -623,7 +623,7 @@ final class Toolbox {
 							 '<p><a href="http://playground.ebiene.de/toolbox-wordpress-plugin/" target="_blank">http://playground.ebiene.de/toolbox-wordpress-plugin/</a></p>'
 			)
 		);
-		
+
 		/* Sidebar */
 		$screen->set_help_sidebar(
 			'<p><strong>Mehr zum Autor</strong></p>'.
@@ -632,8 +632,8 @@ final class Toolbox {
 			'<p><a href="http://ebiene.de" target="_blank">Portfolio</a></p>'
 		);
 	}
-	
-	
+
+
 	/**
 	* Registrierung der Optionen
 	*
@@ -665,7 +665,7 @@ final class Toolbox {
 	*/
 
 	public static function validate_options($data)
-	{	
+	{
 		return array(
 			'secure'  => (int)(!empty($data['secure'])),
 			'modules' => self::_prepare_modules( (array)$data['modules'], (array)$data['status'] )
@@ -693,11 +693,11 @@ final class Toolbox {
 				<?php settings_fields('toolbox') ?>
 
 				<?php $options = get_option('toolbox') ?>
-				
+
 				<div class="table rounded">
 					<table class="form-table">
 						<caption class="rounded">Module</caption>
-						
+
 						<?php if ( $modules = self::_list_modules() ) {
 							foreach ($modules as $module) { ?>
 								<tr>
@@ -718,11 +718,11 @@ final class Toolbox {
 						} ?>
 					</table>
 				</div>
-				
+
 				<div class="table rounded">
 					<table class="form-table">
 						<caption class="rounded">Einstellungen</caption>
-						
+
 						<tr>
 							<th>
 								Sicherheitsmodus aktiv
@@ -733,7 +733,7 @@ final class Toolbox {
 						</tr>
 					</table>
 				</div>
-				
+
 				<p class="submit">
 					<span class="help">Beachte die Hilfe<br />oben rechts</span>
 					<input type="submit" class="button-primary" value="<?php _e('Save Changes') ?>" />
