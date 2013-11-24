@@ -10,10 +10,8 @@ Version: 0.1
 
 
 /* Sicherheitsabfrage */
-if ( !class_exists('WP') ) {
-	header('Status: 403 Forbidden');
-	header('HTTP/1.1 403 Forbidden');
-	exit();
+if ( ! class_exists('WP') ) {
+	die();
 }
 
 
@@ -42,7 +40,7 @@ final class Toolbox {
 		$options = get_option('toolbox');
 
 		/* Sicherheit */
-		if ( !empty($options['secure']) ) {
+		if ( ! empty($options['secure']) ) {
 			if ( (defined('DOING_AUTOSAVE') && DOING_AUTOSAVE) or (defined('DOING_CRON') && DOING_CRON) or (defined('DOING_AJAX') && DOING_AJAX) or (defined('XMLRPC_REQUEST') && XMLRPC_REQUEST) ) {
 				return;
 			}
@@ -116,7 +114,7 @@ final class Toolbox {
 	public static function install()
 	{
 		/* Multisite & Network */
-		if ( is_multisite() && !empty($_GET['networkwide']) ) {
+		if ( is_multisite() && ! empty($_GET['networkwide']) ) {
 			/* Blog-IDs */
 			$ids = self::_get_blog_ids();
 
@@ -145,7 +143,7 @@ final class Toolbox {
 	public static function install_later($id)
 	{
 		/* Kein Netzwerk-Plugin */
-		if ( !is_plugin_active_for_network(self::$plugin_path) ) {
+		if ( ! is_plugin_active_for_network(self::$plugin_path) ) {
 			return;
 		}
 
@@ -192,7 +190,7 @@ final class Toolbox {
 		global $wpdb;
 
 		/* Multisite & Network */
-		if ( is_multisite() && !empty($_GET['networkwide']) ) {
+		if ( is_multisite() && ! empty($_GET['networkwide']) ) {
 			/* Alter Blog */
 			$old = $wpdb->blogid;
 
@@ -223,7 +221,7 @@ final class Toolbox {
 	public static function uninstall_later($id)
 	{
 		/* Kein Netzwerk-Plugin */
-		if ( !is_plugin_active_for_network(self::$plugin_path) ) {
+		if ( ! is_plugin_active_for_network(self::$plugin_path) ) {
 			return;
 		}
 
@@ -281,7 +279,7 @@ final class Toolbox {
 	public static function action_links($data)
 	{
 		/* Rechte */
-		if ( !current_user_can('manage_options') ) {
+		if ( ! current_user_can('manage_options') ) {
 			return $data;
 		}
 
@@ -324,7 +322,8 @@ final class Toolbox {
 		return array_merge(
 			$links,
 			array(
-				'<a href="http://wpcoder.de" target="_blank">Weitere Plugins des Autors</a>'
+				'<a href="https://flattr.com/t/457444" target="_blank">Flattr</a>',
+				'<a href="https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&amp;hosted_button_id=5RDDW9FEHGLG6" target="_blank">PayPal</a>'
 			)
 		);
 	}
@@ -523,15 +522,6 @@ final class Toolbox {
 			)
 		);
 
-		/* CSS */
-		add_action(
-			'admin_print_styles-' .$page,
-			array(
-				__CLASS__,
-				'add_css'
-			)
-		);
-
 		/* Hilfe */
 		add_action(
 			'load-' .$page,
@@ -540,31 +530,6 @@ final class Toolbox {
 				'add_help'
 			)
 		);
-	}
-
-
-	/**
-	* Einbindung von CSS
-	*
-	* @since   0.1
-	* @change  0.1
-	*/
-
-	public static function add_css()
-	{
-		/* Infos auslesen */
-		$data = get_plugin_data(__FILE__);
-
-		/* CSS registrieren */
-		wp_register_style(
-			'toolbox_css',
-			plugins_url('css/style.css', __FILE__),
-			array(),
-			$data['Version']
-		);
-
-		/* CSS einbinden */
-		wp_enqueue_style('toolbox_css');
 	}
 
 
@@ -594,7 +559,7 @@ final class Toolbox {
 							 	'Toolbox bindet das Modul ausschliesslich im Administrationsbereich ein. Nicht im Blog-Frontend.</li>'.
 
 							 	'<li><em>Laden nur im Frontend</em><br />'.
-							 	'Die Ausführung des Moduls erfolgt ausnahmslos im Blog-Frontend. Das Backend ist davon ausgeschlossen.</li>'.
+							 	'Die Ausführung des Moduls erfolgt ausnahmsweise im Blog-Frontend. Das Backend ist davon ausgeschlossen.</li>'.
 
 							 	'<li><em>Laden im Back- und Frontend</em><br />'.
 							 	'Das Modul ist aktiv auf allen Blogseiten. Im Admin und Blogseiten.</li>'.
@@ -628,8 +593,8 @@ final class Toolbox {
 		$screen->set_help_sidebar(
 			'<p><strong>Mehr zum Autor</strong></p>'.
 			'<p><a href="https://plus.google.com/110569673423509816572/" target="_blank">Google+</a></p>'.
-			'<p><a href="http://wpcoder.de" target="_blank">Plugins</a></p>'.
-			'<p><a href="http://ebiene.de" target="_blank">Portfolio</a></p>'
+			'<p><a href="http://twitter.com/wpSEO" target="_blank">Twitter</a></p>'.
+			'<p><a href="http://wpcoder.de" target="_blank">Plugins</a></p>'
 		);
 	}
 
@@ -682,9 +647,7 @@ final class Toolbox {
 
 	public static function options_page()
 	{ ?>
-		<div class="wrap" id="toolbox_main">
-			<?php screen_icon('toolbox') ?>
-
+		<div class="wrap">
 			<h2>
 				Toolbox
 			</h2>
@@ -694,49 +657,62 @@ final class Toolbox {
 
 				<?php $options = get_option('toolbox') ?>
 
-				<div class="table rounded">
-					<table class="form-table">
-						<caption class="rounded">Module</caption>
+				<table class="form-table">
+					<?php if ( $modules = self::_list_modules() ) {
+						foreach ($modules as $module) { ?>
+							<tr valign="top">
+								<th scope="row">
+									<?php echo esc_html($module['name']) ?>
+								</th>
+								<td>
+									<fieldset>
+										<legend class="screen-reader-text">
+											<span>
+												<?php echo esc_html($module['name']) ?>
+											</span>
+										</legend>
+										<label>
+											<select name="toolbox[status][]">
+												<?php foreach ( array('Deaktiviert', 'Laden nur im Backend', 'Laden nur im Frontend', 'Laden im Back- und Frontend') as $k => $v ) { ?>
+													<option value="<?php echo esc_attr($k) ?>" <?php selected(@$options['modules'][$module['ident']], $k) ?>>
+														<?php echo esc_html($v) ?>
+													</option>
+												<?php } ?>
+											</select>
+											<input type="hidden" name="toolbox[modules][]" value="<?php echo esc_attr($module['ident']) ?>" />
+										</label>
 
-						<?php if ( $modules = self::_list_modules() ) {
-							foreach ($modules as $module) { ?>
-								<tr>
-									<th>
-										<?php echo esc_html($module['name']) ?>
-										<small><?php echo esc_html($module['desc']) ?> <?php echo $module['link'] ?></small>
-										<input type="hidden" name="toolbox[modules][]" value="<?php echo esc_attr($module['ident']) ?>" />
-									</th>
-									<td>
-										<select name="toolbox[status][]">
-											<?php foreach ( array('Deaktiviert', 'Laden nur im Backend', 'Laden nur im Frontend', 'Laden im Back- und Frontend') as $k => $v ) { ?>
-												<option value="<?php echo esc_attr($k) ?>" <?php selected(@$options['modules'][$module['ident']], $k) ?>><?php echo esc_html($v) ?></option>
-											<?php } ?>
-										</select>
-									</td>
-								</tr>
-							<?php }
-						} ?>
-					</table>
-				</div>
+										<p class="description">
+											<?php echo esc_html($module['desc']) ?> <?php echo $module['link'] ?>
+										</p>
+									</fieldset>
+								</td>
+							</tr>
+						<?php }
+					} ?>
 
-				<div class="table rounded">
-					<table class="form-table">
-						<caption class="rounded">Einstellungen</caption>
-
-						<tr>
-							<th>
-								Sicherheitsmodus aktiv
-							</th>
-							<td>
-								<input type="checkbox" name="toolbox[secure]" value="1" <?php checked('1', $options['secure']); ?> />
-							</td>
-						</tr>
-					</table>
-				</div>
+					<tr valign="top">
+						<th scope="row">
+							Sicherheitsmodus
+						</th>
+						<td>
+							<fieldset>
+								<legend class="screen-reader-text">
+									<span>
+										Sicherheitsmodus aktiv
+									</span>
+								</legend>
+								<label for="toolbox_secure">
+									<input type="checkbox" name="toolbox[secure]" id="toolbox_secure" value="1" <?php checked('1', $options['secure']) ?> />
+									Aktiv
+								</label>
+							</fieldset>
+						</td>
+					</tr>
+				</table>
 
 				<p class="submit">
-					<span class="help">Beachte die Hilfe<br />oben rechts</span>
-					<input type="submit" class="button-primary" value="<?php _e('Save Changes') ?>" />
+					<input type="submit" class="button button-primary" value="<?php _e('Save Changes') ?>" />
 				</p>
 			</form>
 		</div><?php
