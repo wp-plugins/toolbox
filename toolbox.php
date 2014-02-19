@@ -3,8 +3,8 @@
 Plugin Name: Toolbox
 Plugin URI: http://playground.ebiene.de/toolbox-wordpress-plugin/
 Description: Ersetzt oder erweitert die <em>functions.php</em> im Theme, indem Code-Schnipsel als Toolbox-Module angelegt und direkt im Plugin verwaltet werden.
-Author: Sergej Müller
-Author URI: http://wpseo.de
+Author: Sergej M&uuml;ller
+Author URI: http://wpcoder.de
 Version: 0.1
 */
 
