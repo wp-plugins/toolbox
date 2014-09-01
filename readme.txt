@@ -3,7 +3,7 @@ Contributors: sergej.mueller
 Tags: tools, functions, modules
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=5RDDW9FEHGLG6
 Requires at least: 3.3
-Tested up to: 3.9
+Tested up to: 4.0
 Stable tag: trunk
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
@@ -43,6 +43,10 @@ Auf diese Weise müssen WordPress-Hooks und andere Funktionserweiterungen nicht 
 
 = Dokumentation =
 * [Toolbox: WordPress Snippets als Module](http://playground.ebiene.de/toolbox-wordpress-plugin/ "Toolbox: WordPress Snippets als Module")
+
+= Unterstützung =
+* Per [Flattr](https://flattr.com/thing/818f7271bb99b074f3e0d749db181f17)
+* Per [PayPal](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=5RDDW9FEHGLG6)
 
 = Autor =
 * [Google+](https://plus.google.com/110569673423509816572 "Google+")
