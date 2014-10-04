@@ -1,7 +1,7 @@
 === Toolbox ===
 Contributors: sergej.mueller
 Tags: tools, functions, modules
-Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=5RDDW9FEHGLG6
+Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=ZAQUT9RLPW8QN
 Requires at least: 3.3
 Tested up to: 4.0
 Stable tag: trunk
@@ -46,7 +46,7 @@ Auf diese Weise müssen WordPress-Hooks und andere Funktionserweiterungen nicht 
 
 = Unterstützung =
 * Per [Flattr](https://flattr.com/thing/818f7271bb99b074f3e0d749db181f17)
-* Per [PayPal](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=5RDDW9FEHGLG6)
+* Per [PayPal](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=ZAQUT9RLPW8QN)
 
 = Autor =
 * [Google+](https://plus.google.com/110569673423509816572 "Google+")

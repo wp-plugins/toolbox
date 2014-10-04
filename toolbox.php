@@ -342,7 +342,7 @@ final class Toolbox {
 			$links,
 			array(
 				'<a href="https://flattr.com/t/457444" target="_blank">Flattr</a>',
-				'<a href="https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&amp;hosted_button_id=5RDDW9FEHGLG6" target="_blank">PayPal</a>'
+				'<a href="https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&amp;hosted_button_id=ZAQUT9RLPW8QN" target="_blank">PayPal</a>'
 			)
 		);
 	}
