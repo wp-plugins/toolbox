@@ -612,7 +612,7 @@ final class Toolbox {
 		$screen->set_help_sidebar(
 			'<p><strong>Mehr zum Autor</strong></p>'.
 			'<p><a href="https://plus.google.com/110569673423509816572/" target="_blank">Google+</a></p>'.
-			'<p><a href="http://twitter.com/wpSEO" target="_blank">Twitter</a></p>'.
+			'<p><a href="https://twitter.com/wpSEO" target="_blank">Twitter</a></p>'.
 			'<p><a href="http://wpcoder.de" target="_blank">Plugins</a></p>'
 		);
 	}
