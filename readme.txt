@@ -1,5 +1,5 @@
 === Toolbox ===
-Contributors: sergej.mueller
+Contributors: stalkerX
 Tags: tools, functions, modules
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=ZAQUT9RLPW8QN
 Requires at least: 3.3
